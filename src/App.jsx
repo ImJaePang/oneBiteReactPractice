@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useReducer } from "react";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import List from "./components/List";
@@ -26,56 +26,59 @@ const mockData = [
     },
 ];
 
+function reducer(state, action) {
+    switch (action.type) {
+        case "CREATE":
+            return [action.data, ...state];
+        case "UPDATE":
+            return state.map((todo) =>
+                todo.id === action.data ? { ...todo, isDone: !todo.isDone } : todo
+            );
+        case "DELETE":
+                return state.filter((todo)=> todo.id !== action.data);
+    }
+}
+
 function App() {
     let idRef = useRef(3);
 
-    const [todos, setTodos] = useState(mockData);
+    // const [todos, setTodos] = useState(mockData);
+    const [todos, dispatch] = useReducer(reducer, mockData);
 
     const onCreate = (content) => {
-        const newTodo = {
-            id: idRef.current++,
-            isDone: false,
-            content: content,
-            date: new Date().getTime(),
-        };
-
-        setTodos([newTodo, ...todos]);
+        dispatch({
+            type: "CREATE",
+            data: {
+                id: idRef.current++,
+                isDone: false,
+                content: content,
+                date: new Date().getTime(),
+            },
+        });
     };
 
     const onUpdate = (targetId) => {
-        // todos State의 값중
-        // targetId와 일치하는 id를 갖는 투두 아이템의 isDone을 변경
-
-        // console.log("targetId : ", targetId);
-
-        setTodos(
-            todos.map((todo) =>
-                // console.log("todo.id :", todo.id);
-                // console.log("...todo : ", {...todo});
-                todo.id === targetId ? { ...todo, isDone: !todo.isDone } : todo
-            )
-        );
+        dispatch({
+            type: "UPDATE",
+            data: targetId,
+        });
     };
 
     const onDelete = (targetId) => {
-        // todos State의 값중
-        // targetId와 일치하는 id를 갖는 투두 아이템을 삭제
 
-        setTodos(todos.filter((todo) => todo.id !== targetId));
+        dispatch({
+            type: "DELETE",
+            data: targetId,
+        });
     };
 
     return (
         <div className="App">
-            <Exam/>
+            {/* <Exam/> */}
 
-
-
-
-            
-            {/* <Header />
+            <Header />
             <Editor onCreate={onCreate} />
-            <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} /> */}
-
+            <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
         </div>
     );
 }
