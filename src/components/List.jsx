@@ -1,6 +1,6 @@
 import "./List.css";
 import TodoItem from "./todoItem";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 const List = ({ todos, onUpdate, onDelete}) => {
     const [search, setSearch] = useState("");
@@ -22,9 +22,47 @@ const List = ({ todos, onUpdate, onDelete}) => {
 
     const filteredTodos = getFilteredData();
 
+    // const getAnalizedData = () => {
+
+    //     console.log("getAnalizedData 실행");
+    //     const totalCount = todos.length;
+    //     const doneCount = todos.filter((todo)=>todo.isDone === true).length;
+    //     const notDoneCount = totalCount - doneCount;
+
+    //     return {
+    //         totalCount : totalCount,
+    //         doneCount : doneCount,
+    //         notDoneCount : notDoneCount,
+    //     }
+    // }
+
+    const {totalCount, doneCount, notDoneCount} = useMemo(()=>{
+        console.log("getAnalizedData 실행");
+        const totalCount = todos.length;
+        const doneCount = todos.filter((todo)=>todo.isDone === true).length;
+        const notDoneCount = totalCount - doneCount;
+
+        return {
+            totalCount : totalCount,
+            doneCount : doneCount,
+            notDoneCount : notDoneCount,
+        }
+        
+    }, [todos]);
+
+    // const {totalCount, doneCount, notDoneCount} = getAnalizedData();
+
     return (
         <div className="List">
             <h4>Todo List🌱</h4>
+
+            <div>
+                <div>total : {totalCount}</div>
+                <div>done : {doneCount}</div>
+                <div>notDone : {notDoneCount}</div>
+
+            </div>
+
             <input
                 value={search}
                 onChange={onChangeSearch}
