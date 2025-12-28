@@ -48,11 +48,11 @@ function App() {
         // console.log("targetId : ", targetId);
 
         setTodos(
-            todos.map((todo) => (
+            todos.map((todo) =>
                 // console.log("todo.id :", todo.id);
                 // console.log("...todo : ", {...todo});
                 todo.id === targetId ? { ...todo, isDone: !todo.isDone } : todo
-            ))
+            )
         );
     };
 
@@ -60,35 +60,8 @@ function App() {
         // todos State의 값중
         // targetId와 일치하는 id를 갖는 투두 아이템을 삭제
 
-        // console.log("targetId : ", targetId);
-
-        console.log("targetId : ", targetId);
-
-        const newTodos = [];
-
-        todos.map((todo)=>{
-          if (todo.id !== targetId){
-            // console.log(todo);
-            // newTodos.push(...todo);
-            newTodos.push(todo);
-          }
-        })
-
-        // console.log(newTodos);
-
-        setTodos(newTodos);
-
-        // setTodos(...newTodos);
-        // setTodos(
-        //     todos.map((todo) => {
-        //         if (todo.id !== targetId){
-        //           return todo;
-        //         }
-        //       })
-        // );
+        setTodos(todos.filter((todo) => todo.id !== targetId));
     };
-
-    
 
     return (
         <div className="App">
