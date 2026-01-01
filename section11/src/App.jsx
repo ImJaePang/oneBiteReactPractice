@@ -35,7 +35,9 @@ function reducer(state, action) {
                 todo.id === action.data ? { ...todo, isDone: !todo.isDone } : todo
             );
         case "DELETE":
-                return state.filter((todo)=> todo.id !== action.data);
+            return state.filter((todo)=> todo.id !== action.data);
+        default :
+            return state;
     }
 }
 
