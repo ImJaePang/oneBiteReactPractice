@@ -1,5 +1,11 @@
 import "./App.css";
-import { useState, useRef, useReducer, useCallback } from "react";
+import {
+    useState,
+    useRef,
+    useReducer,
+    useCallback,
+    createContext,
+} from "react";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import List from "./components/List";
@@ -32,14 +38,19 @@ function reducer(state, action) {
             return [action.data, ...state];
         case "UPDATE":
             return state.map((todo) =>
-                todo.id === action.data ? { ...todo, isDone: !todo.isDone } : todo
+                todo.id === action.data
+                    ? { ...todo, isDone: !todo.isDone }
+                    : todo
             );
         case "DELETE":
-            return state.filter((todo)=> todo.id !== action.data);
-        default :
+            return state.filter((todo) => todo.id !== action.data);
+        default:
             return state;
     }
 }
+
+export const TodoContext = createContext();
+console.log("TodoContext : ", TodoContext);
 
 function App() {
     let idRef = useRef(3);
@@ -70,7 +81,6 @@ function App() {
     // const func = useCallback(()=>{},[]);
 
     const onDelete = useCallback((targetId) => {
-
         dispatch({
             type: "DELETE",
             data: targetId,
@@ -82,8 +92,17 @@ function App() {
             {/* <Exam/> */}
 
             <Header />
-            <Editor onCreate={onCreate} />
-            <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
+            <TodoContext.Provider
+                value={{
+                    todos,
+                    onCreate,
+                    onUpdate,
+                    onDelete,
+                }}
+            >
+                <Editor />
+                <List  />
+            </TodoContext.Provider>
         </div>
     );
 }

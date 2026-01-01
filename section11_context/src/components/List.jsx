@@ -1,8 +1,11 @@
 import "./List.css";
 import TodoItem from "./todoItem";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
+import { TodoContext } from "../App";
 
-const List = ({ todos, onUpdate, onDelete}) => {
+const List = () => {
+    const {todos} = useContext(TodoContext);
+
     const [search, setSearch] = useState("");
 
     const onChangeSearch = (e) => {
@@ -14,27 +17,14 @@ const List = ({ todos, onUpdate, onDelete}) => {
             return todos;
         }
 
-        return todos.filter((todo) =>
+        console.log(search);
 
+        return todos.filter((todo) =>
             todo.content.toLowerCase().includes(search.toLowerCase())
         );
     };
 
     const filteredTodos = getFilteredData();
-
-    // const getAnalizedData = () => {
-
-    //     console.log("getAnalizedData 실행");
-    //     const totalCount = todos.length;
-    //     const doneCount = todos.filter((todo)=>todo.isDone === true).length;
-    //     const notDoneCount = totalCount - doneCount;
-
-    //     return {
-    //         totalCount : totalCount,
-    //         doneCount : doneCount,
-    //         notDoneCount : notDoneCount,
-    //     }
-    // }
 
     const {totalCount, doneCount, notDoneCount} = useMemo(()=>{
         console.log("getAnalizedData 실행");
@@ -60,7 +50,6 @@ const List = ({ todos, onUpdate, onDelete}) => {
                 <div>total : {totalCount}</div>
                 <div>done : {doneCount}</div>
                 <div>notDone : {notDoneCount}</div>
-
             </div>
 
             <input
@@ -72,7 +61,7 @@ const List = ({ todos, onUpdate, onDelete}) => {
                 {filteredTodos.map((todo) => {
                     // console.log(todo);
                     // if (!todo) return null;
-                    return <TodoItem key={todo.id} {...todo} onUpdate={onUpdate} onDelete={onDelete} />;
+                    return <TodoItem key={todo.id} {...todo} />;
                     // return <TodoItem onUpdate={onUpdate} {...todo} />;
                 })}
             </div>

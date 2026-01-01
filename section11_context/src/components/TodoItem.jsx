@@ -1,26 +1,33 @@
 import "./TodoItem.css";
-import { memo } from "react";
+import { memo, useContext } from "react";
+import { TodoContext } from "../App";
 
-const TodoItem = ({isDone, content, date, id, onUpdate, onDelete}) => {
+const TodoItem = ({ isDone, content, date, id }) => {
+    const { onUpdate, onDelete } = useContext(TodoContext);
 
     const onChangeCheckBox = () => {
         onUpdate(id);
         // console.log(onUpdate);
         // console.log(id);
-    }
+    };
 
-    const onClickDelete = () =>{
+    const onClickDelete = () => {
         onDelete(id);
-    }
+    };
 
-    
-
-    return <div className="TodoItem">
-        <input readOnly type={"checkbox"} onChange={onChangeCheckBox} checked={isDone} />
-        <div className="content">{content}</div>
-        <div className="date">{new Date(date).toLocaleDateString()}</div>
-        <button onClick={onClickDelete}>삭제</button>
-    </div>;
+    return (
+        <div className="TodoItem">
+            <input
+                readOnly
+                type={"checkbox"}
+                onChange={onChangeCheckBox}
+                checked={isDone}
+            />
+            <div className="content">{content}</div>
+            <div className="date">{new Date(date).toLocaleDateString()}</div>
+            <button onClick={onClickDelete}>삭제</button>
+        </div>
+    );
 };
 
 // 고차 컴포넌트(HOC)
