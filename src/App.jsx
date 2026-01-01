@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useRef, useReducer } from "react";
+import { useState, useRef, useReducer, useCallback } from "react";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import List from "./components/List";
@@ -45,7 +45,7 @@ function App() {
     // const [todos, setTodos] = useState(mockData);
     const [todos, dispatch] = useReducer(reducer, mockData);
 
-    const onCreate = (content) => {
+    const onCreate = useCallback((content) => {
         dispatch({
             type: "CREATE",
             data: {
@@ -55,22 +55,25 @@ function App() {
                 date: new Date().getTime(),
             },
         });
-    };
+    }, []);
 
-    const onUpdate = (targetId) => {
+    const onUpdate = useCallback((targetId) => {
         dispatch({
             type: "UPDATE",
             data: targetId,
         });
-    };
+    }, []);
 
-    const onDelete = (targetId) => {
+    // useCallback 사용
+    // const func = useCallback(()=>{},[]);
+
+    const onDelete = useCallback((targetId) => {
 
         dispatch({
             type: "DELETE",
             data: targetId,
         });
-    };
+    }, []);
 
     return (
         <div className="App">
