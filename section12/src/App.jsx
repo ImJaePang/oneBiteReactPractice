@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";
@@ -12,8 +12,20 @@ import NotFound from "./pages/NotFound";
 function App() {
     const [count, setCount] = useState(0);
 
+    const nav = useNavigate();
+
+    const onClickButton = () => {
+        nav("/new");
+    }
+
     return (
         <>
+            <div>
+                <Link to={"/"}>Home</Link>
+                <Link to={"/new"}>new</Link>
+                <Link to={"/diary"}>Diary</Link>
+            </div>
+            <button onClick={onClickButton}>New Page 이동</button>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/new" element={<New />} />
