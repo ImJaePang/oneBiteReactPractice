@@ -4,8 +4,8 @@ const Home = () => {
 
     const [params, setParams] = useSearchParams();
 
-    console.log(params);
-    console.log(params.get("value"));
+    // console.log(params);
+    // console.log(params.get("value"));
 
     return <div>Home</div>;
 }
