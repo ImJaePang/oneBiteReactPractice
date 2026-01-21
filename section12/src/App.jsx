@@ -1,60 +1,42 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import "./App.css";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";
+import Edit from "./pages/Edit";
 import NotFound from "./pages/NotFound";
-import { getEmotionImage } from "./util/get-emotion-image";
-import Button from "./components/Button";
-import Header from "./components/Header";
 
-// 1. "/" : 모든 일기를 조회하는 Home 페이지
-// 2. "/new" : 새로운 일기 작성 페이지
-// 3. "/diary" : 상세 조회 페이지
+const mockData = [
+    {
+        id : 1,
+        createdDate : new Date().getTime(),
+        emotionId : 1,
+        content : "1번 일기 내용",
+    },
+    {
+        id : 2,
+        createdDate : new Date().getTime(),
+        emotionId : 2,
+        content : "2번 일기 내용",
+    },
+]
+
+function reducer(state, action){
+    return state;
+}
+
 function App() {
-    const [count, setCount] = useState(0);
 
-    const nav = useNavigate();
-
-    const onClickButton = () => {
-        nav("/new");
-    };
+    const [data, dispatch] = useReducer(reducer, mockData);
 
     return (
         <>
-            <Header
-                title={"Header"}
-                leftChild={<Button text={"left"}/>}
-                rightChild={<Button text={"right"}/>}
-            />
-
-            <Button
-                text={"123"}
-                onClick={() => {
-                    console.log(123);
-                }}
-                type={"DEFAULT"}
-            />
-            <Button
-                text={"234"}
-                onClick={() => {
-                    console.log(234);
-                }}
-                type={"POSITIVE"}
-            />
-            <Button
-                text={"345"}
-                onClick={() => {
-                    console.log(345);
-                }}
-                type={"NEGATIVE"}
-            />
-            <button onClick={onClickButton}>New Page 이동</button>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/new" element={<New />} />
                 <Route path="/diary/:id" element={<Diary />} />
+                <Route path="/edit/:id" element={<Edit />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </>
