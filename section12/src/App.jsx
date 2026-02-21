@@ -7,18 +7,30 @@ import Diary from "./pages/Diary";
 import Edit from "./pages/Edit";
 import NotFound from "./pages/NotFound";
 
+const getMonthlyData = (pivotDate, data) => {
+    const beginTime = new Date(pivotDate.getFullYear(), pivotDate.getMonth(), 1, 0, 0, 0).getTimeStamp();
+    const endTime = new Date(pivotDate.getFullYear(), pivotDate.getMonth() +1, 0, 23, 59, 59).getTimeStamp();
+    return data.filter((item)=>{item.createdDate})
+}
+
 const mockData = [
     {
         id: 1,
-        createdDate: new Date().getTime(),
+        createdDate: new Date("2026-02-21").getTime(),
         emotionId: 1,
         content: "1번 일기 내용",
     },
     {
         id: 2,
-        createdDate: new Date().getTime(),
+        createdDate: new Date("2026-02-20").getTime(),
         emotionId: 2,
         content: "2번 일기 내용",
+    },
+    {
+        id: 3,
+        createdDate: new Date("2026-01-17").getTime(),
+        emotionId: 3,
+        content: "3번 일기 내용",
     },
 ];
 
@@ -39,8 +51,8 @@ function reducer(state, action) {
     }
 }
 
-const DiaryStateContext = createContext();
-const DiaryDispatchContext = createContext();
+export const DiaryStateContext = createContext();
+export const DiaryDispatchContext = createContext();
 
 function App() {
     const idRef = useRef(3);
