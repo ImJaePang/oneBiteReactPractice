@@ -7,11 +7,6 @@ import Diary from "./pages/Diary";
 import Edit from "./pages/Edit";
 import NotFound from "./pages/NotFound";
 
-const getMonthlyData = (pivotDate, data) => {
-    const beginTime = new Date(pivotDate.getFullYear(), pivotDate.getMonth(), 1, 0, 0, 0).getTimeStamp();
-    const endTime = new Date(pivotDate.getFullYear(), pivotDate.getMonth() +1, 0, 23, 59, 59).getTimeStamp();
-    return data.filter((item)=>{item.createdDate})
-}
 
 const mockData = [
     {
