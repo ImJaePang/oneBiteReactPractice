@@ -7,30 +7,23 @@ import Button from "../components/Button";
 
 const Edit = () => {
   const params = useParams();
-//   console.log(params);
   const nav = useNavigate();
 
   const [curDiaryItem, setCurDiaryItem] = useState();
 
-  const { onCreate } = useContext(DiaryDispatchContext);
+  const { onUpdate } = useContext(DiaryDispatchContext);
   const data = useContext(DiaryStateContext);
 
-  //   const item = data.find((item)=>{
-  //     console.log("items : ", data);
-  //     if (String(item.id) === String(params.id)){
-  //         return item;
-  //     }
-  //   });
-  //   console.log("item : , ", item);
-
   const onSubmit = (input) => {
-    onUpdate(
-      params.id,
-      input.createdDate.getTime(),
-      input.emotionId,
-      input.content,
-    );
-    nav("/", { replace: true });
+    if (window.confirm("정말 수정하시겠습니까?")) {
+      onUpdate(
+        params.id,
+        input.createdDate.getTime(),
+        input.emotionId,
+        input.content,
+      );
+      nav("/", { replace: true });
+    }
   };
 
   const { onDelete } = useContext(DiaryDispatchContext);
@@ -41,19 +34,17 @@ const Edit = () => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const currentDiaryItem = data.find(
       (item) => String(item.id) === String(params.id),
     );
 
-    if (!currentDiaryItem){
-        window.alert("존재하지 않는 일기입니다.");
-        nav("/", {replace : true});
+    if (!currentDiaryItem) {
+      window.alert("존재하지 않는 일기입니다.");
+      nav("/", { replace: true });
     }
-    // return currentDiaryItem;
     setCurDiaryItem(currentDiaryItem);
-  },[params.id, data]);
-//   const currentDiaryItem = getCurrentDiaryItem();
+  }, [params.id]);
 
   return (
     <div>
@@ -68,7 +59,7 @@ const Edit = () => {
           />
         }
       />
-      <Editor onSubmit={onSubmit} />
+      <Editor initData={curDiaryItem} onSubmit={onSubmit} />
     </div>
   );
 };
