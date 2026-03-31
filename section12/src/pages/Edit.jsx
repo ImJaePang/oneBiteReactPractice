@@ -4,15 +4,15 @@ import Editor from "../components/Editor";
 import { useContext, useEffect, useState } from "react";
 import { DiaryDispatchContext, DiaryStateContext } from "../App";
 import Button from "../components/Button";
+import useDiary from "../hooks/useDiary";
 
 const Edit = () => {
   const params = useParams();
   const nav = useNavigate();
 
-  const [curDiaryItem, setCurDiaryItem] = useState();
-
   const { onUpdate } = useContext(DiaryDispatchContext);
-  const data = useContext(DiaryStateContext);
+  
+  const curDiaryItem = useDiary(params.id);
 
   const onSubmit = (input) => {
     if (window.confirm("정말 수정하시겠습니까?")) {
@@ -34,17 +34,7 @@ const Edit = () => {
     }
   };
 
-  useEffect(() => {
-    const currentDiaryItem = data.find(
-      (item) => String(item.id) === String(params.id),
-    );
 
-    if (!currentDiaryItem) {
-      window.alert("존재하지 않는 일기입니다.");
-      nav("/", { replace: true });
-    }
-    setCurDiaryItem(currentDiaryItem);
-  }, [params.id]);
 
   return (
     <div>
