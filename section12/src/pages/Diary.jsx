@@ -4,38 +4,31 @@ import Button from "../components/Button";
 import { useContext, useEffect, useState } from "react";
 import { DiaryStateContext } from "../App";
 import Viewer from "../components/Viewer";
+import useDiary from "../hooks/useDiary";
+import {getStringedDate} from "../util/get-Stringed-date";
 
 const Diary = () => {
 
     const params = useParams();
-    const DiaryItems = useContext(DiaryStateContext);
-
-    const [curDiaryItem, setCurDiaryItem] = useState({
-        createdDate : "yyyy-mm-dd"
-    });
-
-    useEffect(()=>{
-        DiaryItems.find((item)=>{
-            if(item.id === params.id){
-                console.log("item : ", item);
-                setCurDiaryItem({
-                    ...item,
-                    createdDate : new Date(item.createdDate),
-                })
-            }
-        });
-    }, [params.id]);
+    const curDiaryItem = useDiary(params.id);
+    console.log(curDiaryItem);
 
     const nav = useNavigate();
 
+    if (!curDiaryItem){
+        return <div>로딩중...</div>
+    }
+
+    const {createdDate, emotionId, content} = curDiaryItem;
+
     return <div>
         <Header
-            title={`${curDiaryItem.createdDate} yyyy-mm-dd 기록`}
+            title={`${getStringedDate(new Date(createdDate))} 기록`}
             leftChild={<Button text={"< 뒤로가기"} onClick={()=>{nav(-1)}} />}
             rightChild={<Button text={"수정하기"} onClick={()=>(nav(`/edit/${params.id}`))}/>}
         />
 
-        <Viewer/>
+        <Viewer emotionId={emotionId} content={content}/>
         </div>;
 }
 

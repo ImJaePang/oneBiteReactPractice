@@ -4,9 +4,7 @@ import { emotionList } from '../util/constants';
 import useDiary from '../hooks/useDiary';
 import { useParams } from 'react-router-dom';
 
-const Viewer = () => {
-
-    const emotionId = 1;
+const Viewer = ({emotionId, content}) => {
 
     const emotionItem = emotionList.find(
         (item) => String(item.emotionId) === String(emotionId)
@@ -27,7 +25,7 @@ const Viewer = () => {
         <section className='content_section'>
             <h4>오늘의 일기</h4>
             <div className='content_wrapper'>
-                <p>일기....</p>
+                <p>{content}</p>
             </div>
         </section>
     </div>
