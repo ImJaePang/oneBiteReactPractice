@@ -6,12 +6,15 @@ import { DiaryStateContext } from "../App";
 import Viewer from "../components/Viewer";
 import useDiary from "../hooks/useDiary";
 import {getStringedDate} from "../util/get-Stringed-date";
+import usePageTitle from "../hooks/usePageTitle";
 
 const Diary = () => {
 
     const params = useParams();
     const curDiaryItem = useDiary(params.id);
-    console.log(curDiaryItem);
+    // console.log(curDiaryItem);
+
+    usePageTitle(`${params.id}번 일기`);
 
     const nav = useNavigate();
 
